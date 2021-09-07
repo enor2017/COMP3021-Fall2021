@@ -29,8 +29,11 @@ public record Position(int row, int col) {
      */
     @NotNull
     public Position offsetBy(final int dRow, final int dCol) {
-        // TODO
-        return null;
+        var newPos = new Position(row + dRow, col + dCol);
+        if (newPos.row < 0 || newPos.col < 0) {
+            throw new IllegalArgumentException("Position coordinates cannot be of a negative value.");
+        }
+        return newPos;
     }
 
     /**
@@ -42,8 +45,11 @@ public record Position(int row, int col) {
      */
     @NotNull
     public Position offsetBy(@NotNull final PositionOffset offset) {
-        // TODO
-        return null;
+        var newPos = new Position(row + offset.dRow(), col + offset.dCol());
+        if (newPos.row < 0 || newPos.col < 0) {
+            throw new IllegalArgumentException("Position coordinates cannot be of a negative value.");
+        }
+        return newPos;
     }
 
     /**
@@ -59,8 +65,11 @@ public record Position(int row, int col) {
      */
     @Nullable
     public Position offsetByOrNull(final int dRow, final int dCol, final int numRows, final int numCols) {
-        // TODO
-        return null;
+        var newPos = new Position(row + dRow, col + dCol);
+        if (newPos.row < 0 || newPos.row > numRows || newPos.col < 0 || newPos.col > numCols) {
+            return null;
+        }
+        return newPos;
     }
 
     /**
@@ -75,7 +84,10 @@ public record Position(int row, int col) {
      */
     @Nullable
     public Position offsetByOrNull(@NotNull final PositionOffset offset, final int numRows, final int numCols) {
-        // TODO
-        return null;
+        var newPos = new Position(row + offset.dRow(), col + offset.dCol());
+        if (newPos.row < 0 || newPos.row > numRows || newPos.col < 0 || newPos.col > numCols) {
+            return null;
+        }
+        return newPos;
     }
 }

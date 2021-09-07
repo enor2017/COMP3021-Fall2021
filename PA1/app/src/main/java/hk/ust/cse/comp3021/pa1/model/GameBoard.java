@@ -48,12 +48,72 @@ public final class GameBoard {
      *                                  </ul>
      */
     public GameBoard(final int numRows, final int numCols, @NotNull final Cell[][] cells) {
-        // TODO
-        this.numRows = 0;
-        this.numCols = 0;
-        this.board = null;
-        this.player = null;
+        if (numRows != cells.length || numCols != cells[0].length) {
+            throw new IllegalArgumentException("Row/Col numbers not match with given map shape.");
+        }
+        if (!checkPlayerGemNum(cells)) {
+            throw new IllegalArgumentException("The number of players/gems not satisfied.");
+        }
+        this.numRows = numRows;
+        this.numCols = numCols;
+        this.board = cells;
+        // get the (player) entity on position: (playerPos)
+        var playerOnPlayerPos = getEntityCell(playerPos).getEntity();
+        if (playerOnPlayerPos == null) {
+            throw new IllegalArgumentException("How come! Wrong player position found???");
+        }
+        this.player = (Player) playerOnPlayerPos;
     }
+
+    /**
+     * total gem numbers on the given map, useful when checking whether gems can all be reached.
+     */
+    private int numGems = 0;
+    /**
+     * player's position on the given map
+     */
+    private Position playerPos;
+
+    /**
+     * check the player and gem numbers in the given map,
+     * besides, update this.numGems
+     * @param cells given map, with type Cell[][]
+     * @return true if only one player and at least one gem, false otherwise.
+     */
+    private boolean checkPlayerGemNum(@NotNull final Cell[][] cells) {
+        int numPlayer = 0, numGem = 0;
+        for(var row : cells) {
+            for(var cell : row) {
+                // if it is an entityCell, cast it and get Entity
+                if (cell.getClass() == EntityCell.class) {
+                    Entity currEntity = ((EntityCell) cell).getEntity();
+                    // if empty entity, move on to next cell
+                    if (currEntity == null) {
+                        continue;
+                    }
+                    if (currEntity.getClass() == Gem.class) {
+                        numGem++;
+                    } else if (currEntity.getClass() == Player.class) {
+                        this.playerPos = cell.getPosition();
+                        numPlayer++;
+                    }
+                }
+            }
+        }
+        this.numGems = numGem;
+        return (numPlayer == 1) && (numGem > 0);
+    }
+
+    /**
+     * check if all gems are reachable, by comparing the # of reachable gems
+     * and # of total gems
+     * @param cells given map
+     * @return true if all gems are reachable, false otherwise
+     */
+    private boolean checkAllGemsReachable(@NotNull final Cell[][] cells) {
+        return true;
+    }
+
 
     /**
      * Returns the {@link Cell}s of a single row of the game board.
@@ -64,8 +124,7 @@ public final class GameBoard {
      */
     @NotNull
     public Cell[] getRow(final int r) {
-        // TODO
-        return null;
+        return board[r];
     }
 
     /**
@@ -73,12 +132,15 @@ public final class GameBoard {
      *
      * @param c Column index.
      * @return 1D array representing the column. The first element in the array corresponds to the topmost element of
-     * the row.
+     * the column.
      */
     @NotNull
     public Cell[] getCol(final int c) {
-        // TODO
-        return null;
+        Cell[] column = new Cell[numRows];
+        for(int i = 0; i < board.length; ++i) {
+            column[i] = board[i][c];
+        }
+        return column;
     }
 
     /**
@@ -90,8 +152,7 @@ public final class GameBoard {
      */
     @NotNull
     public Cell getCell(final int r, final int c) {
-        // TODO
-        return null;
+        return board[r][c];
     }
 
     /**
@@ -102,8 +163,7 @@ public final class GameBoard {
      */
     @NotNull
     public Cell getCell(@NotNull final Position position) {
-        // TODO
-        return null;
+        return board[position.row()][position.col()];
     }
 
     /**
@@ -120,8 +180,11 @@ public final class GameBoard {
      */
     @NotNull
     public EntityCell getEntityCell(final int r, final int c) {
-        // TODO
-        return null;
+        Cell currCell = getCell(r, c);
+        if (currCell.getClass() != EntityCell.class) {
+            throw new IllegalArgumentException("The specified cell is not an EntityCell.");
+        }
+        return (EntityCell) currCell;
     }
 
     /**
@@ -137,24 +200,21 @@ public final class GameBoard {
      */
     @NotNull
     public EntityCell getEntityCell(@NotNull final Position position) {
-        // TODO
-        return null;
+        return getEntityCell(position.row(), position.col());
     }
 
     /**
      * @return The number of rows of this game board.
      */
     public int getNumRows() {
-        // TODO
-        return 0;
+        return numRows;
     }
 
     /**
      * @return The number of columns of this game board.
      */
     public int getNumCols() {
-        // TODO
-        return 0;
+        return numCols;
     }
 
     /**
@@ -162,15 +222,13 @@ public final class GameBoard {
      */
     @NotNull
     public Player getPlayer() {
-        // TODO
-        return null;
+        return player;
     }
 
     /**
      * @return The number of gems still present in the game board.
      */
     public int getNumGems() {
-        // TODO
-        return 0;
+        return numGems;
     }
 }

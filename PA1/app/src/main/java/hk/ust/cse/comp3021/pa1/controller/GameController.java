@@ -23,8 +23,7 @@ public class GameController {
      * @param gameState The instance of {@link GameState} to control.
      */
     public GameController(@NotNull final GameState gameState) {
-        // TODO
-        this.gameState = null;
+        this.gameState = gameState;
     }
 
     /**

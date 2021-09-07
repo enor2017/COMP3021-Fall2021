@@ -14,7 +14,7 @@ public abstract sealed class Entity implements BoardElement permits ExtraLife, G
      * Creates an instance of {@link Entity}, initially not present on any {@link EntityCell}.
      */
     protected Entity() {
-        // TODO
+        this.owner = null;
     }
 
     /**
@@ -23,7 +23,7 @@ public abstract sealed class Entity implements BoardElement permits ExtraLife, G
      * @param owner The initial {@link EntityCell} the entity resides on.
      */
     protected Entity(@Nullable final EntityCell owner) {
-        // TODO
+        this.owner = owner;
     }
 
     /**
@@ -41,8 +41,9 @@ public abstract sealed class Entity implements BoardElement permits ExtraLife, G
      */
     @Nullable
     public final EntityCell setOwner(@Nullable final EntityCell owner) {
-        // TODO
-        return null;
+        var prevOwner = this.owner;
+        this.owner = owner;
+        return prevOwner;
     }
 
     /**
@@ -50,7 +51,6 @@ public abstract sealed class Entity implements BoardElement permits ExtraLife, G
      */
     @Nullable
     public final EntityCell getOwner() {
-        // TODO
-        return null;
+        return this.owner;
     }
 }

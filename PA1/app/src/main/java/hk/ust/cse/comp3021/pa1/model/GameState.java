@@ -38,6 +38,7 @@ public class GameState {
 
     /**
      * The number of lives the player has.
+     * Set to UNLIMITED_LIVES if unlimited.
      */
     private int numLives;
 
@@ -56,9 +57,9 @@ public class GameState {
      * @param gameBoard The game board to be managed by this instance.
      */
     public GameState(@NotNull final GameBoard gameBoard) {
-        // TODO
-        this.gameBoard = null;
-        this.initialNumOfGems = 0;
+        this.gameBoard = gameBoard;
+        this.numLives = UNLIMITED_LIVES;
+        this.initialNumOfGems = gameBoard.getNumGems();
     }
 
     /**
@@ -73,9 +74,9 @@ public class GameState {
      *                  unlimited number of lives.
      */
     public GameState(@NotNull final GameBoard gameBoard, final int numLives) {
-        // TODO
-        this.gameBoard = null;
-        this.initialNumOfGems = 0;
+        this.gameBoard = gameBoard;
+        this.numLives = numLives < 0 ? UNLIMITED_LIVES : numLives;
+        this.initialNumOfGems = gameBoard.getNumGems();
     }
 
     /**
@@ -88,8 +89,7 @@ public class GameState {
      * @return Whether the player has won the game.
      */
     public boolean hasWon() {
-        // TODO
-        return false;
+        return gameBoard.getNumGems() == 0;
     }
 
     /**
@@ -103,8 +103,7 @@ public class GameState {
      * @return Whether the player has lost the game.
      */
     public boolean hasLost() {
-        // TODO
-        return false;
+        return numLives == 0;
     }
 
     /**
@@ -115,8 +114,12 @@ public class GameState {
      * {@link Integer#MAX_VALUE}.
      */
     public int increaseNumLives(final int delta) {
-        // TODO
-        return 0;
+        if (numLives == UNLIMITED_LIVES) {
+            return Integer.MAX_VALUE;
+        } else {
+            numLives += delta;
+            return numLives;
+        }
     }
 
     /**
@@ -127,8 +130,15 @@ public class GameState {
      * {@link Integer#MAX_VALUE}.
      */
     public int decreaseNumLives(final int delta) {
-        // TODO
-        return 0;
+        if (numLives == UNLIMITED_LIVES) {
+            return Integer.MAX_VALUE;
+        } else if (numLives - delta <= 0) {
+            numLives = 0;
+            return numLives;
+        } else {
+            numLives -= delta;
+            return numLives;
+        }
     }
 
     /**
@@ -138,8 +148,7 @@ public class GameState {
      * {@link Integer#MAX_VALUE}.
      */
     public int decrementNumLives() {
-        // TODO
-        return 0;
+        return decreaseNumLives(1);
     }
 
     /**
@@ -148,8 +157,7 @@ public class GameState {
      * @return The new number of moves taken by the player.
      */
     public int incrementNumMoves() {
-        // TODO
-        return 0;
+        return ++numMoves;
     }
 
     /**
@@ -158,32 +166,28 @@ public class GameState {
      * @return The new number of deaths of the player.
      */
     public int incrementNumDeaths() {
-        // TODO
-        return 0;
+        return ++numDeaths;
     }
 
     /**
      * @return The current number of deaths of the player.
      */
     public int getNumDeaths() {
-        // TODO
-        return 0;
+        return numDeaths;
     }
 
     /**
      * @return The current number of moves taken by the player.
      */
     public int getNumMoves() {
-        // TODO
-        return 0;
+        return numMoves;
     }
 
     /**
      * @return Whether the player has unlimited lives.
      */
     public boolean hasUnlimitedLives() {
-        // TODO
-        return false;
+        return numLives == UNLIMITED_LIVES;
     }
 
     /**
@@ -191,16 +195,15 @@ public class GameState {
      * {@link Integer#MAX_VALUE}.
      */
     public int getNumLives() {
-        // TODO
-        return 0;
+        return numLives == UNLIMITED_LIVES ? Integer.MAX_VALUE : numLives;
     }
 
     /**
      * @return The number of gems that is still present on the game board.
      */
     public int getNumGems() {
-        // TODO
-        return 0;
+        // TODO: still present???
+        return gameBoard.getNumGems();
     }
 
     /**
@@ -218,8 +221,10 @@ public class GameState {
      * @return The current score of this game.
      */
     public int getScore() {
-        // TODO
-        return 0;
+        int boardSize = gameBoard.getNumCols() * gameBoard.getNumRows();
+        // TODO: num undo
+        int numUndo = 0;
+        return boardSize + 10 * getNumGems() - numMoves - 2 * numUndo - 4 * numDeaths;
     }
 
     /**

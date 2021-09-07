@@ -14,8 +14,7 @@ public final class StopCell extends EntityCell {
      * @param position The position where this cell belongs at.
      */
     public StopCell(@NotNull final Position position) {
-        // TODO
-        super(null);
+        super(position);
     }
 
     /**
@@ -25,20 +24,38 @@ public final class StopCell extends EntityCell {
      * @param initialEntity The initial entity present in this cell.
      */
     public StopCell(@NotNull final Position position, @Nullable final Entity initialEntity) {
-        // TODO
-        super(null);
+        super(position, initialEntity);
     }
 
     /**
      * Same as {@link EntityCell#setEntity(Entity)}, with additional checking.
      *
-     * @throws IllegalArgumentException if the entity is not {@code null} and not an instance of {@link Player}.
+     * @throws IllegalArgumentException if the entity is {@code null} and not an instance of {@link Player}.
      */
     @Nullable
     @Override
     public Entity setEntity(@Nullable final Entity newEntity) {
-        // TODO
-        return null;
+        if (newEntity == null || newEntity.getClass() != Player.class) {
+            throw new IllegalArgumentException("Illegal argument!");
+        }
+
+        // below same as EntityCell.setEntity()
+        var prevEntity = this.entity;
+        // unset the owner of previous entity
+        if (prevEntity != null) {
+            prevEntity.setOwner(null);
+        }
+        if (newEntity != null) {
+            // unset the EntityCell.entity of the previous cell owning newEntity.
+            var prevOwner = newEntity.getOwner();
+            if (prevOwner != null) {
+                prevOwner.setEntity(null);
+            }
+            // set the new owner of newEntity to this instance
+            newEntity.setOwner(this);
+        }
+        this.entity = newEntity;
+        return prevEntity;
     }
 
     /**
@@ -54,8 +71,8 @@ public final class StopCell extends EntityCell {
      */
     @Nullable
     public Player setPlayer(@Nullable final Player newPlayer) {
-        // TODO
-        return null;
+        var prevEntity = this.setEntity(newPlayer);
+        return prevEntity == null ? null : (Player) prevEntity;
     }
 
     @Override
