@@ -89,7 +89,7 @@ public class GameState {
      * @return Whether the player has won the game.
      */
     public boolean hasWon() {
-        return gameBoard.getNumGems() == 0;
+        return getNumGems() == 0;
     }
 
     /**
@@ -202,7 +202,6 @@ public class GameState {
      * @return The number of gems that is still present on the game board.
      */
     public int getNumGems() {
-        // TODO: still present???
         return gameBoard.getNumGems();
     }
 
@@ -224,23 +223,22 @@ public class GameState {
         int boardSize = gameBoard.getNumCols() * gameBoard.getNumRows();
         // TODO: num undo
         int numUndo = 0;
-        return boardSize + 10 * getNumGems() - numMoves - 2 * numUndo - 4 * numDeaths;
+        return boardSize + 10 * (initialNumOfGems - getNumGems()) -
+                numMoves - 2 * numUndo - 4 * numDeaths;
     }
 
     /**
      * @return A controller of the managed game board for mutation.
      */
     public GameBoardController getGameBoardController() {
-        // TODO
-        return null;
+        return new GameBoardController(gameBoard);
     }
 
     /**
      * @return A read-only view of the managed game board.
      */
     public GameBoardView getGameBoardView() {
-        // TODO
-        return null;
+        return new GameBoardView(gameBoard);
     }
 
     /**
@@ -248,8 +246,7 @@ public class GameState {
      */
     @NotNull
     public GameBoard getGameBoard() {
-        // TODO
-        return null;
+        return gameBoard;
     }
 
     /**
@@ -257,7 +254,6 @@ public class GameState {
      */
     @NotNull
     public MoveStack getMoveStack() {
-        // TODO
-        return null;
+        return moveStack;
     }
 }

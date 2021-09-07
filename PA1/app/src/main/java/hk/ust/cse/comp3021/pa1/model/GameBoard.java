@@ -58,7 +58,7 @@ public final class GameBoard {
         this.numCols = numCols;
         this.board = cells;
         // get the (player) entity on position: (playerPos)
-        var playerOnPlayerPos = getEntityCell(playerPos).getEntity();
+        var playerOnPlayerPos = ((EntityCell) getCell(playerPos)).getEntity();
         if (playerOnPlayerPos == null) {
             throw new IllegalArgumentException("How come! Wrong player position found???");
         }
@@ -85,15 +85,15 @@ public final class GameBoard {
         for(var row : cells) {
             for(var cell : row) {
                 // if it is an entityCell, cast it and get Entity
-                if (cell.getClass() == EntityCell.class) {
+                if (cell instanceof EntityCell) {
                     Entity currEntity = ((EntityCell) cell).getEntity();
                     // if empty entity, move on to next cell
                     if (currEntity == null) {
                         continue;
                     }
-                    if (currEntity.getClass() == Gem.class) {
+                    if (currEntity instanceof Gem) {
                         numGem++;
-                    } else if (currEntity.getClass() == Player.class) {
+                    } else if (currEntity instanceof Player) {
                         this.playerPos = cell.getPosition();
                         numPlayer++;
                     }
@@ -101,6 +101,7 @@ public final class GameBoard {
             }
         }
         this.numGems = numGem;
+        System.out.println("numPlayer = " + numPlayer + ", numGen = " + numGem);
         return (numPlayer == 1) && (numGem > 0);
     }
 
@@ -181,7 +182,7 @@ public final class GameBoard {
     @NotNull
     public EntityCell getEntityCell(final int r, final int c) {
         Cell currCell = getCell(r, c);
-        if (currCell.getClass() != EntityCell.class) {
+        if (!(currCell instanceof EntityCell)) {
             throw new IllegalArgumentException("The specified cell is not an EntityCell.");
         }
         return (EntityCell) currCell;

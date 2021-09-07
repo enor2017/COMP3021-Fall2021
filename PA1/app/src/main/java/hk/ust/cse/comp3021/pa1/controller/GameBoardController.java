@@ -24,8 +24,7 @@ public class GameBoardController {
      * @param gameBoard The instance of {@link GameBoard} to control.
      */
     public GameBoardController(@NotNull final GameBoard gameBoard) {
-        // TODO
-        this.gameBoard = null;
+        this.gameBoard = gameBoard;
     }
 
     /**
