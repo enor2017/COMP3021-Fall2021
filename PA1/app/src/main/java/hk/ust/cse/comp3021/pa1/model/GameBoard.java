@@ -101,7 +101,7 @@ public final class GameBoard {
             }
         }
         this.numGems = numGem;
-        System.out.println("numPlayer = " + numPlayer + ", numGen = " + numGem);
+//        System.out.println("numPlayer = " + numPlayer + ", numGen = " + numGem);
         return (numPlayer == 1) && (numGem > 0);
     }
 
