@@ -34,10 +34,8 @@ public abstract sealed class MoveResult {
          * @param origPosition The original {@link Position} of the player before moving.
          */
         private Valid(@NotNull final Position newPosition, @NotNull final Position origPosition) {
-            // TODO
-            super(null);
-
-            this.origPosition = null;
+            super(newPosition);
+            this.origPosition = origPosition;
         }
 
         /**
@@ -86,11 +84,9 @@ public abstract sealed class MoveResult {
                          @NotNull final List<Position> collectedGems,
                          @NotNull final List<Position> collectedExtraLives
             ) {
-                // TODO
-                super(null, null);
-
-                this.collectedGems = null;
-                this.collectedExtraLives = null;
+                super(newPosition, origPosition);
+                this.collectedGems = collectedGems;
+                this.collectedExtraLives = collectedExtraLives;
             }
         }
 
@@ -120,10 +116,9 @@ public abstract sealed class MoveResult {
              *                     dies from).
              */
             public Dead(@NotNull final Position newPosition, @NotNull final Position minePosition) {
-                // TODO
-                super(null, null);
+                super(newPosition, newPosition);    // newPosition is the same as originalPosition
 
-                this.minePosition = null;
+                this.minePosition = minePosition;
             }
         }
     }
@@ -145,8 +140,7 @@ public abstract sealed class MoveResult {
          *                    original position before the move.
          */
         public Invalid(@NotNull final Position newPosition) {
-            // TODO
-            super(null);
+            super(newPosition);
         }
     }
 
@@ -156,8 +150,7 @@ public abstract sealed class MoveResult {
      * @param newPosition The new {@link Position} of the player after making the move.
      */
     private MoveResult(@NotNull final Position newPosition) {
-        // TODO
-        this.newPosition = null;
+        this.newPosition = newPosition;
     }
 }
 
