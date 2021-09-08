@@ -2,6 +2,9 @@ package hk.ust.cse.comp3021.pa1.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 /**
  * The main game board of the game.
  *
@@ -33,6 +36,11 @@ public final class GameBoard {
     private final Player player;
 
     /**
+     * player's position on the given map
+     */
+    private Position playerPos;
+
+    /**
      * Creates an instance using the provided creation parameters.
      *
      * @param numRows The number of rows in the game board.
@@ -54,6 +62,9 @@ public final class GameBoard {
         if (!checkPlayerGemNum(cells)) {
             throw new IllegalArgumentException("The number of players/gems not satisfied.");
         }
+        if (!checkAllGemsReachable(cells)) {
+            throw new IllegalArgumentException("There are some gems that cannot be reached by the player.");
+        }
         this.numRows = numRows;
         this.numCols = numCols;
         this.board = cells;
@@ -69,10 +80,6 @@ public final class GameBoard {
      * total gem numbers on the given map, useful when checking whether gems can all be reached.
      */
     private int numGems = 0;
-    /**
-     * player's position on the given map
-     */
-    private Position playerPos;
 
     /**
      * check the player and gem numbers in the given map,
@@ -81,7 +88,8 @@ public final class GameBoard {
      * @return true if only one player and at least one gem, false otherwise.
      */
     private boolean checkPlayerGemNum(@NotNull final Cell[][] cells) {
-        int numPlayer = 0, numGem = 0;
+        int numPlayer = 0;  // the # of players in given map
+        int numGem = 0;     // the # of gems in given map
         for(var row : cells) {
             for(var cell : row) {
                 // if it is an entityCell, cast it and get Entity
@@ -112,7 +120,68 @@ public final class GameBoard {
      * @return true if all gems are reachable, false otherwise
      */
     private boolean checkAllGemsReachable(@NotNull final Cell[][] cells) {
-        return true;
+        getReachablePos(cells, playerPos);
+        int reachableGems = 0;
+        for (var pos : reachablePosIsGem.keySet()) {
+            if (reachablePosIsGem.get(pos)) {
+                reachableGems++;
+            }
+        }
+        return reachableGems == numGems;
+    }
+
+    /**
+     * A HashMap containing whether a reachable position is gem.
+     * 1st indicating reachable position, 2nd is true if position contains a gem
+     */
+    private HashMap<Position, Boolean> reachablePosIsGem = new HashMap<Position, Boolean>();
+
+    /**
+     * Use recursion (DFS) to get all reachable positions, and
+     * insert into HashMap with whether the position contains a gem
+     * @param cells given map
+     * @param pos starting position
+     */
+    private void getReachablePos(@NotNull final Cell[][] cells, @NotNull Position pos) {
+        // check if this cell is an entity cell, and even, if holds a gem
+        var currCell = cells[pos.row()][pos.col()];
+        if (currCell instanceof EntityCell) {
+            var entity = ((EntityCell) currCell).getEntity();
+            if (entity instanceof Gem) {
+                // if it is an entity cell and contains a gem
+                reachablePosIsGem.put(pos, true);
+            } else {
+                // if it is an entity cell but doesn't contain gem
+                reachablePosIsGem.put(pos, false);
+            }
+        } else {
+            // if it isn't an entity cell
+            reachablePosIsGem.put(pos, false);
+        }
+        // iterate four directions
+        Direction[] directions = Direction.values();
+        for(var dire : directions) {
+            Position newPos = pos.offsetByOrNull(dire.getOffset(), cells.length, cells[0].length);
+            // if new position is valid and has not been visited and is not a wall, call recursion
+            if (newPos != null && !reachablePosIsGem.containsKey(newPos) && !isWall(cells, newPos)) {
+                getReachablePos(cells, newPos);
+            }
+        }
+    }
+
+    /**
+     * given a map and a position, check whether the position is a wall,
+     * Assume position is always valid.
+     * @param cells given map
+     * @param pos given position
+     * @return true if the position is a wall, false otherwise
+     */
+    private boolean isWall(@NotNull final Cell[][] cells, @NotNull Position pos) {
+        var cell = cells[pos.row()][pos.col()];
+        if (cell instanceof Wall) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -224,6 +293,14 @@ public final class GameBoard {
     @NotNull
     public Player getPlayer() {
         return player;
+    }
+
+    @NotNull
+    public Position getPlayerPos() {
+        if (player.getOwner() == null) {
+            throw new IllegalCallerException("How come? player has no owner??");
+        }
+        return player.getOwner().getPosition();
     }
 
     /**

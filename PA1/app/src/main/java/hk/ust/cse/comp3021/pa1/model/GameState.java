@@ -43,6 +43,11 @@ public class GameState {
     private int numLives;
 
     /**
+     * The number of undos the player have performed
+     */
+    private int numUndos = 0;
+
+    /**
      * The number of gems initially on the game board when this instance was created.
      */
     private final int initialNumOfGems;

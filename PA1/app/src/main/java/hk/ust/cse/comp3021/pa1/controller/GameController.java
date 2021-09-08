@@ -34,6 +34,7 @@ public class GameController {
      */
     public MoveResult processMove(@NotNull final Direction direction) {
         // TODO
+        var offSet = direction.getOffset();
         return null;
     }
 

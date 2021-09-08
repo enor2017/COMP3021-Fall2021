@@ -29,11 +29,10 @@ public record Position(int row, int col) {
      */
     @NotNull
     public Position offsetBy(final int dRow, final int dCol) {
-        var newPos = new Position(row + dRow, col + dCol);
-        if (newPos.row < 0 || newPos.col < 0) {
+        if (row + dRow < 0 || col + dCol < 0) {
             throw new IllegalArgumentException("Position coordinates cannot be of a negative value.");
         }
-        return newPos;
+        return new Position(row + dRow, col + dCol);
     }
 
     /**
@@ -45,11 +44,10 @@ public record Position(int row, int col) {
      */
     @NotNull
     public Position offsetBy(@NotNull final PositionOffset offset) {
-        var newPos = new Position(row + offset.dRow(), col + offset.dCol());
-        if (newPos.row < 0 || newPos.col < 0) {
+        if (row + offset.dRow() < 0 || col + offset.dCol() < 0) {
             throw new IllegalArgumentException("Position coordinates cannot be of a negative value.");
         }
-        return newPos;
+        return new Position(row + offset.dRow(), col + offset.dCol());
     }
 
     /**
@@ -65,11 +63,12 @@ public record Position(int row, int col) {
      */
     @Nullable
     public Position offsetByOrNull(final int dRow, final int dCol, final int numRows, final int numCols) {
-        var newPos = new Position(row + dRow, col + dCol);
-        if (newPos.row < 0 || newPos.row > numRows || newPos.col < 0 || newPos.col > numCols) {
+        int newRow = row + dRow;
+        int newCol = col + dCol;
+        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols) {
             return null;
         }
-        return newPos;
+        return new Position(newRow, newCol);
     }
 
     /**
@@ -84,10 +83,20 @@ public record Position(int row, int col) {
      */
     @Nullable
     public Position offsetByOrNull(@NotNull final PositionOffset offset, final int numRows, final int numCols) {
-        var newPos = new Position(row + offset.dRow(), col + offset.dCol());
-        if (newPos.row < 0 || newPos.row > numRows || newPos.col < 0 || newPos.col > numCols) {
+        int newRow = row + offset.dRow();
+        int newCol = col + offset.dCol();
+        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols) {
             return null;
         }
-        return newPos;
+        return new Position(newRow, newCol);
+    }
+
+    /**
+     * Return a string representation of position, for debugging
+     * @return A string like "(row, col)"
+     */
+    @Override
+    public String toString() {
+        return "(" + row + ", " + col + ")";
     }
 }
