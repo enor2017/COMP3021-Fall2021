@@ -3,7 +3,6 @@ package hk.ust.cse.comp3021.pa1.model;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * The main game board of the game.
@@ -134,7 +133,7 @@ public final class GameBoard {
      * A HashMap containing whether a reachable position is gem.
      * 1st indicating reachable position, 2nd is true if position contains a gem
      */
-    private HashMap<Position, Boolean> reachablePosIsGem = new HashMap<Position, Boolean>();
+    private HashMap<Position, Boolean> reachablePosIsGem = new HashMap<>();
 
     /**
      * Use recursion (DFS) to get all reachable positions, and
@@ -178,10 +177,7 @@ public final class GameBoard {
      */
     private boolean isWall(@NotNull final Cell[][] cells, @NotNull Position pos) {
         var cell = cells[pos.row()][pos.col()];
-        if (cell instanceof Wall) {
-            return true;
-        }
-        return false;
+        return (cell instanceof Wall);
     }
 
 
