@@ -61,7 +61,9 @@ public class GameController {
         } else {
             // to undo, we pop a move from moveStack,
             // and recover gameBoard from undoStack(by calling GameBoardController)
-            gameState.getGameBoardController().undoMove(gameState.getMoveStack().pop());
+            var move = (MoveResult.Valid.Alive) gameState.getMoveStack().pop();
+            gameState.getGameBoardController().undoMove(move);
+            gameState.decreaseNumLives(move.collectedExtraLives.size());
             return true;
         }
     }
