@@ -294,7 +294,7 @@ public final class GameBoard {
     }
 
     @NotNull
-    public Position getPlayerPos() {
+    private Position getPlayerPos() {
         if (player.getOwner() == null) {
             throw new IllegalCallerException("How come? player has no owner??");
         }

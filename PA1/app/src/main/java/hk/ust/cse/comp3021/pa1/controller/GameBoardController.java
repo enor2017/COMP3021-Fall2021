@@ -64,25 +64,22 @@ public class GameBoardController {
                     var newPlayerCell = gameBoard.getEntityCell(prevPos);
                     newPlayerCell.setEntity(gameBoard.getPlayer());
                     break;
-                }
-                // if player hit mine this step
-                else if (isMine(newPos)) {
+                } else if (isMine(newPos)) {
+                    // if player hit mine this step
                     result = new MoveResult.Valid.Dead(playerPos, newPos);
                     break;
-                }
-                // or, if player reach a stop cell this step
-                else if (isStop(newPos)) {
+                } else if (isStop(newPos)) {
+                    // or, if player reach a stop cell this step
                     result = new MoveResult.Valid.Alive(newPos, playerPos,
                             collectedGems, collectedLives);
                     // set new position for player
                     var newPlayerCell = gameBoard.getEntityCell(newPos);
                     newPlayerCell.setEntity(gameBoard.getPlayer());
                     break;
-                }
-                // otherwise, player can continue moving,
-                // and check if current pos is gem/extraLife
-                // ATTENTION: just set the entity to null, rather than modify the values.
-                else {
+                } else {
+                    // otherwise, player can continue moving,
+                    // and check if current pos is gem/extraLife
+                    // ATTENTION: just set the entity to null, rather than modify the values.
                     if (containsGem(newPos)) {
                         gameBoard.getEntityCell(newPos).setEntity(null);
                         collectedGems.push(newPos);
@@ -183,7 +180,11 @@ public class GameBoardController {
      * @return the player's position, in a 'Position' object.
      */
     private Position getPlayerPos() {
-        return gameBoard.getPlayerPos();
+        var ownerCell = gameBoard.getPlayer().getOwner();
+        if (ownerCell == null) {
+            throw new IllegalArgumentException("How come? player has no owner??");
+        }
+        return ownerCell.getPosition();
     }
 
     /**

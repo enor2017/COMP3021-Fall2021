@@ -4,8 +4,6 @@ import hk.ust.cse.comp3021.pa1.controller.GameBoardController;
 import hk.ust.cse.comp3021.pa1.view.GameBoardView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Stack;
-
 /**
  * Class for tracking the state of multiple game components.
  */
@@ -43,11 +41,6 @@ public class GameState {
      * Set to UNLIMITED_LIVES if unlimited.
      */
     private int numLives;
-
-    /**
-     * The number of undos the player have performed
-     */
-    private int numUndos = 0;
 
     /**
      * The number of gems initially on the game board when this instance was created.
@@ -177,15 +170,6 @@ public class GameState {
     }
 
     /**
-     * Increments the number of Undos of the player.
-     *
-     * @return The new number of Undos of the player.
-     */
-    public int incrementNumUndos() {
-        return ++numUndos;
-    }
-
-    /**
      * @return The current number of deaths of the player.
      */
     public int getNumDeaths() {
@@ -239,7 +223,7 @@ public class GameState {
     public int getScore() {
         int boardSize = gameBoard.getNumCols() * gameBoard.getNumRows();
         return boardSize + 10 * (initialNumOfGems - getNumGems()) -
-                numMoves - 2 * numUndos - 4 * numDeaths;
+                numMoves - 2 * getMoveStack().getPopCount() - 4 * numDeaths;
     }
 
     /**

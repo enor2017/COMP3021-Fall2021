@@ -62,7 +62,6 @@ public class GameController {
             // to undo, we pop a move from moveStack,
             // and recover gameBoard from undoStack(by calling GameBoardController)
             gameState.getGameBoardController().undoMove(gameState.getMoveStack().pop());
-            gameState.incrementNumUndos();
             return true;
         }
     }
