@@ -68,11 +68,13 @@ public final class GameBoard {
         this.numCols = numCols;
         this.board = cells;
         // get the (player) entity on position: (playerPos)
-        var playerOnPlayerPos = ((EntityCell) getCell(playerPos)).getEntity();
+        var playerCell = getEntityCell(playerPos);
+        var playerOnPlayerPos = (playerCell).getEntity();
         if (playerOnPlayerPos == null) {
             throw new IllegalArgumentException("How come! Wrong player position found???");
         }
         this.player = (Player) playerOnPlayerPos;
+        playerCell.setEntity(this.player);
     }
 
     /**
