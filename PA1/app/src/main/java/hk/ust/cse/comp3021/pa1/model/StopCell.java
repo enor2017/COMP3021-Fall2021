@@ -30,12 +30,12 @@ public final class StopCell extends EntityCell {
     /**
      * Same as {@link EntityCell#setEntity(Entity)}, with additional checking.
      *
-     * @throws IllegalArgumentException if the entity is {@code null} and not an instance of {@link Player}.
+     * @throws IllegalArgumentException if the entity is not {@code null} and not an instance of {@link Player}.
      */
     @Nullable
     @Override
     public Entity setEntity(@Nullable final Entity newEntity) {
-        if (newEntity == null || newEntity.getClass() != Player.class) {
+        if (newEntity != null && !(newEntity instanceof Player)) {
             throw new IllegalArgumentException("Illegal argument!");
         }
 

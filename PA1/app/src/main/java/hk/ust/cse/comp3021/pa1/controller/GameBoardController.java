@@ -196,6 +196,17 @@ public class GameBoardController {
      * @param prevMove The {@link MoveResult} object to revert.
      */
     public void undoMove(@NotNull final MoveResult prevMove) {
-        // TODO
+        if (!(prevMove instanceof MoveResult.Valid.Alive)) {
+            throw new IllegalArgumentException("The previous move to undo must be valid and alive.");
+        }
+        var move = (MoveResult.Valid.Alive) prevMove;
+        // reset the position of Player, Gems and ExtraLives
+        gameBoard.getEntityCell(move.origPosition).setEntity(gameBoard.getPlayer());
+        for (var gemPos : move.collectedGems) {
+            gameBoard.getEntityCell(gemPos).setEntity(new Gem());
+        }
+        for (var lifePos : move.collectedExtraLives) {
+            gameBoard.getEntityCell(lifePos).setEntity(new ExtraLife());
+        }
     }
 }
