@@ -189,7 +189,7 @@ public class GameBoardTest {
         final var cells = GameBoardUtils.createEmptyCellArray(rows, cols, EntityCell::new);
 
         ((EntityCell) cells[0][0]).setEntity(new Player());
-        ((EntityCell) cells[1][1]).setEntity(new Gem());
+        ((EntityCell) cells[0][2]).setEntity(new Gem());
 
         gameBoard = new GameBoard(rows, cols, cells);
 
@@ -210,7 +210,7 @@ public class GameBoardTest {
 
         ((EntityCell) cells[0][0]).setEntity(new Player());
         cells[0][1] = new Wall(new Position(0, 1));
-        ((EntityCell) cells[1][1]).setEntity(new Gem());
+        ((EntityCell) cells[0][2]).setEntity(new Gem());
 
         gameBoard = new GameBoard(rows, cols, cells);
 
@@ -218,7 +218,7 @@ public class GameBoardTest {
     }
 
     // P**
-    // ***
+    // *.*
     // ***
     @Test
     @Tag("provided")
@@ -234,10 +234,11 @@ public class GameBoardTest {
             }
         }
         ((EntityCell) cells[0][0]).setEntity(new Player());
+        ((EntityCell) cells[1][1]).setEntity(null);
 
         gameBoard = new GameBoard(rows, cols, cells);
 
-        assertEquals(8, gameBoard.getNumGems());
+        assertEquals(7, gameBoard.getNumGems());
     }
 
     @AfterEach

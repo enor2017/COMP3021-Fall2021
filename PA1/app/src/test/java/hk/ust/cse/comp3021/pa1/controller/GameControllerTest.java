@@ -59,13 +59,13 @@ public class GameControllerTest {
     }
 
     // For UP and LEFT:
-    // P..
-    // .*.
+    // P.*
+    // ...
     // ...
     //
     // For DOWN and RIGHT:
+    // ..*
     // ...
-    // .*.
     // ..P
     @ParameterizedTest
     @Tag("provided")
@@ -82,7 +82,7 @@ public class GameControllerTest {
         gameBoard = GameBoardUtils.createGameBoard(3, 3, (pos) -> {
             if (pos.equals(expectedPos)) {
                 return new EntityCell(pos, new Player());
-            } else if (pos.equals(new Position(1, 1))) {
+            } else if (pos.equals(new Position(0, 2))) {
                 return new EntityCell(pos, new Gem());
             } else {
                 return new EntityCell(pos);

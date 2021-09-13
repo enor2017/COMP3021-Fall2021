@@ -57,13 +57,13 @@ public class GameBoardControllerTest {
     }
 
     // For UP and LEFT:
-    // P..
-    // .*.
+    // P.*
+    // ...
     // ...
     //
     // For DOWN and RIGHT:
+    // ..*
     // ...
-    // .*.
     // ..P
     @ParameterizedTest
     @Tag("provided")
@@ -80,7 +80,7 @@ public class GameBoardControllerTest {
         gameBoard = GameBoardUtils.createGameBoard(3, 3, (pos) -> {
             if (pos.equals(expectedPos)) {
                 return new EntityCell(pos, new Player());
-            } else if (pos.equals(new Position(1, 1))) {
+            } else if (pos.equals(new Position(0, 2))) {
                 return new EntityCell(pos, new Gem());
             } else {
                 return new EntityCell(pos);
@@ -91,7 +91,7 @@ public class GameBoardControllerTest {
         assumeTrue(gameBoard.getEntityCell(expectedPos).getEntity() instanceof Player);
         assumeTrue(gameBoard.getPlayer().equals(gameBoard.getEntityCell(expectedPos).getEntity()));
         assumeTrue(gameBoard.getNumGems() == 1);
-        assumeTrue(gameBoard.getEntityCell(1, 1).getEntity() instanceof Gem);
+        assumeTrue(gameBoard.getEntityCell(0, 2).getEntity() instanceof Gem);
 
         final var moveResult = controller.makeMove(direction);
 
@@ -105,7 +105,7 @@ public class GameBoardControllerTest {
         // Non-Mutation Assertions
         assertEquals(gameBoard.getPlayer(), gameBoard.getEntityCell(expectedPos).getEntity());
         assertEquals(1, gameBoard.getNumGems());
-        assertTrue(gameBoard.getEntityCell(1, 1).getEntity() instanceof Gem);
+        assertTrue(gameBoard.getEntityCell(0, 2).getEntity() instanceof Gem);
     }
 
     // P.W*
