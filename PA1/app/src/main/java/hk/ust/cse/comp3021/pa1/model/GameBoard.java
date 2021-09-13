@@ -302,9 +302,23 @@ public final class GameBoard {
     }
 
     /**
+     * Re-calculate the num of gems on the board.
      * @return The number of gems still present in the game board.
      */
     public int getNumGems() {
-        return numGems;
+        int numGem = 0;     // the # of gems in given map
+        for(var row : board) {
+            for(var cell : row) {
+                // if it is an entityCell, cast it and get Entity
+                if (cell instanceof EntityCell) {
+                    Entity currEntity = ((EntityCell) cell).getEntity();
+                    // if this cell contains a gem
+                    if (currEntity instanceof Gem) {
+                        numGem++;
+                    }
+                }
+            }
+        }
+        return numGem;
     }
 }

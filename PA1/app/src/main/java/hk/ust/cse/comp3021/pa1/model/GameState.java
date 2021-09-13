@@ -53,7 +53,7 @@ public class GameState {
      * The previous gameBoards, when an valid action is done,
      * put previous gameBoard into this stack.
      */
-    private Stack<GameBoard> prevBoards;
+    private Stack<GameBoard> prevBoards = new Stack<>();
 
     /**
      * The number of gems initially on the game board when this instance was created.
@@ -227,6 +227,7 @@ public class GameState {
         return gameBoard.getNumGems();
     }
 
+
     /**
      * <p>
      * At any point of the game, the score should be computed using the following formula:
@@ -275,5 +276,13 @@ public class GameState {
     @NotNull
     public MoveStack getMoveStack() {
         return moveStack;
+    }
+
+    /**
+     * @return The stack storing previous boards, used for undo.
+     */
+    @NotNull
+    public Stack<GameBoard> getUndoStack() {
+        return this.prevBoards;
     }
 }
