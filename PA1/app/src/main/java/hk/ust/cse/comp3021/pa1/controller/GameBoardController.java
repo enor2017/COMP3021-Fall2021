@@ -1,9 +1,9 @@
 package hk.ust.cse.comp3021.pa1.controller;
 
-import hk.ust.cse.comp3021.pa1.model.Direction;
-import hk.ust.cse.comp3021.pa1.model.GameBoard;
-import hk.ust.cse.comp3021.pa1.model.MoveResult;
+import hk.ust.cse.comp3021.pa1.model.*;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.LinkedList;
 
 /**
  * Controller for {@link GameBoard}.
@@ -41,8 +41,149 @@ public class GameBoardController {
      */
     @NotNull
     public MoveResult makeMove(@NotNull final Direction direction) {
-        // TODO
-        return null;
+        var playerPos = getPlayerPos();
+        var newPos = checkCanMove(playerPos, direction);
+        if (newPos == null) {
+            return new MoveResult.Invalid(playerPos);
+        } else {
+            MoveResult result;
+            // record prevPos during the process of consecutive moving
+            Position prevPos = null;
+            // record collected Gems and ExtraLives
+            LinkedList<Position> collectedGems = new LinkedList<>();
+            LinkedList<Position> collectedLives = new LinkedList<>();
+            // check if the player can continue to move.
+            while(true) {
+                // cannot move on, since this pos is wall or out of bound
+                // we just stop at previous position
+                // (this cannot happen in first loop)
+                if (newPos == null) {
+                    result = new MoveResult.Valid.Alive(prevPos, playerPos,
+                            collectedGems, collectedLives);
+                    // set new position for player
+                    var newPlayerCell = gameBoard.getEntityCell(prevPos);
+                    newPlayerCell.setEntity(gameBoard.getPlayer());
+                    break;
+                }
+                // if player hit mine this step
+                else if (isMine(newPos)) {
+                    result = new MoveResult.Valid.Dead(playerPos, newPos);
+                    break;
+                }
+                // or, if player reach a stop cell this step
+                else if (isStop(newPos)) {
+                    result = new MoveResult.Valid.Alive(newPos, playerPos,
+                            collectedGems, collectedLives);
+                    // set new position for player
+                    var newPlayerCell = gameBoard.getEntityCell(newPos);
+                    newPlayerCell.setEntity(gameBoard.getPlayer());
+                    break;
+                }
+                // otherwise, player can continue moving,
+                // and check if current pos is gem/extraLife
+                // ATTENTION: just set the entity to null, rather than modify the values.
+                else {
+                    if (containsGem(newPos)) {
+                        gameBoard.getEntityCell(newPos).setEntity(null);
+                        collectedGems.push(newPos);
+                    }
+                    if (containsExtraLife(newPos)) {
+                        gameBoard.getEntityCell(newPos).setEntity(null);
+                        collectedLives.push(newPos);
+                    }
+                    prevPos = newPos;
+                    newPos = checkCanMove(newPos, direction);
+                }
+            }
+            return result;
+        }
+    }
+
+    /**
+     * helper function: check if player can move to given direction
+     * some invalid movements:
+     * (1) if out of bound after movement
+     * (2) if in the wall after movement
+     * @param pos the current position of player
+     * @param direction the direction player want to move
+     * @return new position after movement, if can move; null if cannot
+     */
+    private Position checkCanMove(@NotNull final Position pos, @NotNull final Direction direction) {
+        var offSet = direction.getOffset();
+        int rows = gameBoard.getNumRows();
+        int cols = gameBoard.getNumCols();
+        var newPos = pos.offsetByOrNull(offSet, rows, cols);
+        // if out of bound or is a wall cell
+        if (newPos == null || getCell(newPos) instanceof Wall) {
+            return null;
+        }
+        return newPos;
+    }
+
+    /**
+     * check if given position is a mine cell.
+     * @param pos the position to check
+     * @return true if is a mine, false otherwise.
+     */
+    private boolean isMine(@NotNull final Position pos) {
+        Cell currCell = getCell(pos);
+        if (currCell instanceof EntityCell) {
+            return ((EntityCell) currCell).getEntity() instanceof Mine;
+        }
+        return false;
+    }
+
+    /**
+     * check if given position is a stop cell.
+     * @param pos the position to check
+     * @return true if is a stop Cell, false otherwise.
+     */
+    private boolean isStop(@NotNull final Position pos) {
+        Cell currCell = getCell(pos);
+        return currCell instanceof StopCell;
+    }
+
+    /**
+     * check if given position contains a gem.
+     * @param pos the position to check
+     * @return true if contains a gem, false otherwise.
+     */
+    private boolean containsGem(@NotNull final Position pos) {
+        Cell currCell = getCell(pos);
+        if (currCell instanceof EntityCell) {
+            return ((EntityCell) currCell).getEntity() instanceof Gem;
+        }
+        return false;
+    }
+
+    /**
+     * check if given position contains an ExtraLife entity.
+     * @param pos the position to check
+     * @return true if contains an ExtraLife entity, false otherwise.
+     */
+    private boolean containsExtraLife(@NotNull final Position pos) {
+        Cell currCell = getCell(pos);
+        if (currCell instanceof EntityCell) {
+            return ((EntityCell) currCell).getEntity() instanceof ExtraLife;
+        }
+        return false;
+    }
+
+    /**
+     * helper method: get the cell object at given position
+     * @param pos given position
+     * @return the cell at that position.
+     */
+    private Cell getCell(@NotNull final Position pos) {
+        return gameBoard.getCell(pos);
+    }
+
+    /**
+     * helper method: return the player's position
+     * @return the player's position, in a 'Position' object.
+     */
+    private Position getPlayerPos() {
+        return gameBoard.getPlayerPos();
     }
 
     /**
