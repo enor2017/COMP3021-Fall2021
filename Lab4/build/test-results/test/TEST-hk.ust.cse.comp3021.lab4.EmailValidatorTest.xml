@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hk.ust.cse.comp3021.lab4.EmailValidatorTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2021-09-22T13:57:12" hostname="dogs-mba.local" time="0.107">
+  <properties/>
+  <testcase name="testSingleLetter()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.042"/>
+  <testcase name="testLocalTooLong()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.004"/>
+  <testcase name="testTag()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testNoTLD()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.003"/>
+  <testcase name="testBangifiedHostRoute()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testEscapedRoute()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testEndsWithDot()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testTooManyAt()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testAdjacentPeriods()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testWithPlus()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testBeginsWithDot()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testHyphenInDomain()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testUnderscoreInDomain()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testWithDot()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testWithHyphen()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.003"/>
+  <testcase name="testInvalidChars()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.003"/>
+  <testcase name="testExampleTLD()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testSimple()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testSlashes()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.001"/>
+  <testcase name="testMissingAt()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <testcase name="testAllHyphens()" classname="hk.ust.cse.comp3021.lab4.EmailValidatorTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
