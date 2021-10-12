@@ -11,11 +11,24 @@ import java.util.List;
 
 
 /**
- * TODO implement this class as needed.
  * Multiplication should implement {@link Operator}, and will be used to construct {@link Operation} objects.
  * All operands are instances of {@link IntNumber}.
  * Hint: Use the constant BigInteger.ONE and the method BigInteger.multiply(BigInteger) to implement the eval method
  */
-public class Multiplication {
+public class Multiplication implements Operator {
+    public Multiplication() {}
 
+    @Override
+    public Value operate(List<Expression> operands) {
+        BigInteger res = BigInteger.ONE;
+        for (var x : operands) {
+            res = res.multiply(new BigInteger(x.eval().toString()));
+        }
+        return new IntNumber(res);
+    }
+
+    @Override
+    public String symbol() {
+        return "*";
+    }
 }

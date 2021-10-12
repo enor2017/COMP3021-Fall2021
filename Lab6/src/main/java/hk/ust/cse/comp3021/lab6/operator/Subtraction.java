@@ -10,7 +10,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * TODO implement this class as needed.
  * Subtraction should implement {@link Operator}, and will be used to construct {@link Operation} objects.
  * All operands are instances of {@link IntNumber}.
  * Hint: BigInteger.subtract(BigInteger) are useful for implementing eval()
@@ -18,6 +17,23 @@ import java.util.List;
  * the first operand
  */
 
-public class Subtraction {
+public class Subtraction implements Operator {
+    public Subtraction() {}
 
+    @Override
+    public Value operate(List<Expression> operands) {
+        if (operands.size() == 1) {
+            return new IntNumber(new BigInteger("-" + operands.get(0).eval().toString()));
+        }
+        BigInteger res = new BigInteger(operands.get(0).eval().toString());
+        for (int i = 1; i < operands.size(); ++i) {
+            res = res.subtract(new BigInteger(operands.get(i).eval().toString()));
+        }
+        return new IntNumber(res);
+    }
+
+    @Override
+    public String symbol() {
+        return "-";
+    }
 }

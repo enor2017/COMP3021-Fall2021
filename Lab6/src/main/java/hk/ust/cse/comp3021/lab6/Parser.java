@@ -80,31 +80,31 @@ public class Parser {
                 if (operands.size() == 0) {
                     throw new IOException("The + operator expects more than 1 operand");
                 }
-                // TODO construct an Expression object and assign to expr variable
+                expr = new Operation(new Addition(), operands);
             }
             case "*" -> {
                 if (operands.size() == 0) {
                     throw new IOException("The * operator expects more than 1 operand");
                 }
-                // TODO construct an Expression object and assign to expr variable
+                expr = new Operation(new Multiplication(), operands);
             }
             case "-" -> {
                 if (operands.size() == 0) {
                     throw new IOException("The - operator expects more than 1 operand");
                 }
-                // TODO construct an Expression object and assign to expr variable
+                expr = new Operation(new Subtraction(), operands);
             }
             case "/" -> {
                 if (operands.size() == 0) {
                     throw new IOException("The / operator expects more than 1 operand");
                 }
-                // TODO construct an Expression object and assign to expr variable
+                expr = new Operation(new Division(), operands);
             }
             case "^" -> {
                 if (operands.size() != 2) {
                     throw new IOException("The ^ operator expects exactly 2 operands");
                 }
-                // TODO construct an Expression object and assign to expr variable
+                expr = new Operation(new Exponent(), operands);
             }
             default -> throw new IOException("Unsupported operator " + operator);
         }

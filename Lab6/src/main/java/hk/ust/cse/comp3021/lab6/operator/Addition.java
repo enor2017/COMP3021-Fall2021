@@ -11,10 +11,24 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * TODO implement this class as needed.
  * Addition should implement {@link Operator}, and will be used to construct {@link Operation} objects.
  * All operands are instances of {@link IntNumber}.
  */
-public class Addition {
+public class Addition implements Operator {
 
+    public Addition() {}
+
+    @Override
+    public Value operate(List<Expression> operands) {
+        BigInteger res = BigInteger.valueOf(0);
+        for (var x : operands) {
+            res = res.add(new BigInteger(x.eval().toString()));
+        }
+        return new IntNumber(res);
+    }
+
+    @Override
+    public String symbol() {
+        return "+";
+    }
 }
