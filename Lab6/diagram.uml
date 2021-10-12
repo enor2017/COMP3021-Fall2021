@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/troublor/workspace/COMP3021-Labs-F2021/Lab6/Solution/src/main/java/hk/ust/cse/comp3021/lab6</OriginalElement>
+  <nodes>
+    <node x="0.0" y="683.0">hk.ust.cse.comp3021.lab6.operator.Division</node>
+    <node x="366.0" y="828.0">hk.ust.cse.comp3021.lab6.Calculator</node>
+    <node x="813.0" y="683.0">hk.ust.cse.comp3021.lab6.operator.Multiplication</node>
+    <node x="162.75" y="0.0">hk.ust.cse.comp3021.lab6.structure.Expression</node>
+    <node x="0.0" y="322.0">hk.ust.cse.comp3021.lab6.value.IntNumber</node>
+    <node x="1084.0" y="683.0">hk.ust.cse.comp3021.lab6.operator.Subtraction</node>
+    <node x="271.0" y="683.0">hk.ust.cse.comp3021.lab6.operator.Addition</node>
+    <node x="542.0" y="556.0">hk.ust.cse.comp3021.lab6.structure.Operator</node>
+    <node x="215.0" y="127.0">hk.ust.cse.comp3021.lab6.structure.Operation</node>
+    <node x="0.0" y="828.0">hk.ust.cse.comp3021.lab6.Parser</node>
+    <node x="0.0" y="139.0">hk.ust.cse.comp3021.lab6.structure.Value</node>
+    <node x="542.0" y="683.0">hk.ust.cse.comp3021.lab6.operator.Exponent</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="hk.ust.cse.comp3021.lab6.operator.Division" target="hk.ust.cse.comp3021.lab6.structure.Operator" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="125.5" y="658.0" />
+      <point x="667.5" y="658.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.structure.Operation" target="hk.ust.cse.comp3021.lab6.structure.Expression" relationship="REALIZATION">
+      <point x="0.0" y="-72.5" />
+      <point x="378.0" y="102.0" />
+      <point x="275.25" y="102.0" />
+      <point x="37.5" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.value.IntNumber" target="hk.ust.cse.comp3021.lab6.structure.Value" relationship="REALIZATION">
+      <point x="0.0" y="-94.5" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.operator.Exponent" target="hk.ust.cse.comp3021.lab6.structure.Operator" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.operator.Multiplication" target="hk.ust.cse.comp3021.lab6.structure.Operator" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="938.5" y="658.0" />
+      <point x="667.5" y="658.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.operator.Addition" target="hk.ust.cse.comp3021.lab6.structure.Operator" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="396.5" y="658.0" />
+      <point x="667.5" y="658.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.structure.Value" target="hk.ust.cse.comp3021.lab6.structure.Expression" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-60.5" />
+      <point x="97.5" y="102.0" />
+      <point x="200.25" y="102.0" />
+      <point x="-37.5" y="38.5" />
+    </edge>
+    <edge source="hk.ust.cse.comp3021.lab6.operator.Subtraction" target="hk.ust.cse.comp3021.lab6.structure.Operator" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="1209.5" y="658.0" />
+      <point x="667.5" y="658.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7848101265822784" showDependencies="false" x="667.5" y="464.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
