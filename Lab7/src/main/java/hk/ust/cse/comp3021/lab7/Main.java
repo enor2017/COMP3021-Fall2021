@@ -84,7 +84,10 @@ public class Main extends Application {
      */
     @Override
     public void start(@NotNull final Stage primaryStage) {
-        // TODO
+        var scene = createBoardScene(getNumRowsFromArgs(), getNumColsFromArgs());
+        primaryStage.setTitle("Lab 7");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
@@ -100,7 +103,7 @@ public class Main extends Application {
      */
     @NotNull
     private static Scene createBoardScene(final int numRows, final int numCols) {
-        // TODO
+        return new Scene(createGridPane(numRows, numCols));
     }
 
     /**
@@ -128,7 +131,16 @@ public class Main extends Application {
      */
     @NotNull
     private static GridPane createGridPane(final int numRows, final int numCols) {
-        // TODO
+        var pane = new GridPane();
+        for (int i = 0; i < numRows; ++i) {
+            for (int j = 0; j < numCols; ++j) {
+                var imageView = createImageView(
+                        (i + j) % 2 == 0 ? BLANK_CELL_IMAGE : WALL_CELL_IMAGE
+                );
+                pane.add(imageView, j, i);
+            }
+        }
+        return pane;
     }
 
     /**
@@ -143,6 +155,9 @@ public class Main extends Application {
      */
     @NotNull
     private static ImageView createImageView(@NotNull final Image image) {
-        // TODO
+        var view  = new ImageView(image);
+        view.setFitHeight(Main.CELL_SIZE);
+        view.setFitWidth(Main.CELL_SIZE);
+        return view;
     }
 }
