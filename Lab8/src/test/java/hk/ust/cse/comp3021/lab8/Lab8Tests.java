@@ -110,7 +110,7 @@ public class Lab8Tests {
 
     @Test
     @Timeout(5)
-    @Disabled
+//    @Disabled
     // This test is by default disable because the method under test is optional in this lab.
     public void testGetFirstNEventsWithBlock() {
         testGetFirstNEventsWithBlock(2);

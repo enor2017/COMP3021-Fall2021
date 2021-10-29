@@ -22,12 +22,17 @@ interface EventEmitter {
     }
 
     /**
+     * A list of listeners of current event
+     */
+    List<Listener> listeners = new ArrayList<>();
+
+    /**
      * Register a new listener
      *
      * @param listener the event listener
      */
     default void addListener(Listener listener) {
-        throw new RuntimeException("implement me");
+        listeners.add(listener);
     }
 
     /**
@@ -36,7 +41,7 @@ interface EventEmitter {
      * @param listener event listener
      */
     default void removeListener(Listener listener) {
-        throw new RuntimeException("implement me");
+        listeners.remove(listener);
     }
 
     /**
@@ -45,11 +50,14 @@ interface EventEmitter {
      * @param event the event to emit
      */
     default void emitEvent(Event event) {
-        throw new RuntimeException("implement me");
+        for (var listener : listeners) {
+            listener.handle(event);
+        }
     }
 }
 
 interface TimeTicker extends EventEmitter {
+    List<Timer> timers = new ArrayList<>();
     /**
      * Start time ticking, emit {@link Event} immediately and then periodically emit events with the given time interval.
      * That is to say, if the interval is 1 second,
@@ -60,7 +68,14 @@ interface TimeTicker extends EventEmitter {
      * @param interval the time interval to emit events periodically.
      */
     default void startTick(Duration interval) {
-        throw new RuntimeException("implement me");
+        var timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                emitEvent(new Event(new Date()));
+            }
+        }, 0, interval.toMillis());
+        timers.add(timer);
     }
 
     /**
@@ -68,7 +83,10 @@ interface TimeTicker extends EventEmitter {
      * If no ticker is working, do nothing.
      */
     default void stopTick() {
-        throw new RuntimeException("implement me");
+        for (var timer : timers) {
+            timer.cancel();
+        }
+        timers.clear();
     }
 }
 

@@ -18,14 +18,22 @@ public class EventSlicer {
      */
     int n;
 
-    // TODO add fields as you like
+    /**
+     * The list of events recorded from service
+     */
+    List<EventEmitter.Event> recordedEvents = new ArrayList<>();
 
     /**
      * @param service the service to record events
      * @param n       the number of first events to record
      */
     EventSlicer(EventEmitter service, int n) {
-        // TODO
+        if (!(service instanceof Lab8Service)) {
+            throw new IllegalArgumentException("service must be a Lab8Service!");
+        }
+        this.service = (Lab8Service) service;
+        this.n = n;
+        service.addListener(e -> recordedEvents.add(e));
     }
 
     /**
@@ -36,8 +44,15 @@ public class EventSlicer {
      * @return a list of {@link EventEmitter.Event} with length at most {@link EventSlicer#n}
      */
     public List<EventEmitter.Event> firstNEventsNonBlock() {
-        // TODO
-        throw new RuntimeException("implement me");
+        if (recordedEvents.size() < n) {
+            return recordedEvents;
+        } else {
+            ArrayList<EventEmitter.Event> temp = new ArrayList<>();
+            for (int i = 0; i < n; ++i) {
+                temp.add(recordedEvents.get(i));
+            }
+            return temp;
+        }
     }
 
     /**
@@ -57,7 +72,21 @@ public class EventSlicer {
      * @return a list of {@link EventEmitter.Event} with length {@link EventSlicer#n}
      */
     public List<EventEmitter.Event> firstNEventsBlock() {
-        // TODO optional
-        throw new RuntimeException("implement me");
+        if (recordedEvents.size() < n) {
+            var future = new CompletableFuture<Boolean>();
+            while (true) {
+                Thread.yield();
+                if (recordedEvents.size() >= n) {
+                    future.complete(true);
+                    break;
+                }
+            }
+        }
+        // there must be at least n events upon running here.
+        ArrayList<EventEmitter.Event> temp = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            temp.add(recordedEvents.get(i));
+        }
+        return temp;
     }
 }
