@@ -22,8 +22,11 @@ public class Heap<T extends Comparable<T>> {
      * Otherwise, return the first element of {@link this#container}
      */
     public T peek() {
-        //TODO
-        return null; // replace this line with implementation
+        if (container.size() == 0) {
+            throw new IllegalStateException("Heap is empty when calling peek()");
+        } else {
+            return container.get(0);
+        }
     }
 
     /**
@@ -33,8 +36,16 @@ public class Heap<T extends Comparable<T>> {
      * Call {@link this#heapifyDown()}, then return the original first element
      */
     public T poll() {
-        //TODO
-        return null; // replace this line with implementation
+        if (container.size() == 0) {
+            throw new IllegalStateException("Heap is empty when calling poll()");
+        } else {
+            var first = container.remove(0);
+            if (!container.isEmpty()) {
+                container.add(0, container.remove(container.size() - 1));
+                this.heapifyDown();
+            }
+            return first;
+        }
     }
 
     private void heapifyDown() {
@@ -59,7 +70,8 @@ public class Heap<T extends Comparable<T>> {
      * @param obj the object to add
      */
     public void add(T obj) {
-        //TODO
+        container.add(obj);
+        this.heapifyUp();
     }
 
     public void addAll(Collection<T> list) {
@@ -71,7 +83,16 @@ public class Heap<T extends Comparable<T>> {
      * with the new parent until there's either no parent or we're larger than our parent.
      */
     private void heapifyUp() {
-        // TODO
+        int pos = container.size() - 1;
+        while (hasParent(pos)) {
+            int parentIndex = getParentIndex(pos);
+            if (container.get(pos).compareTo(container.get(parentIndex)) < 0) {
+                swap(pos, parentIndex);
+            } else {
+                break;
+            }
+            pos = parentIndex;
+        }
     }
 
     public int size() {
