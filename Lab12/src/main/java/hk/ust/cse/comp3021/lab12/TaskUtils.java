@@ -27,8 +27,8 @@ public class TaskUtils {
      */
     @NotNull
     public static Set<String> getDistinctSetOfTags(@NotNull final Stream<Task> stream) {
-        // TODO
-        return Collections.emptySet();
+        var tagStream = stream.flatMap(t -> t.getTags().stream()).distinct();
+        return tagStream.collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -47,10 +47,9 @@ public class TaskUtils {
      */
     @NotNull
     public static Set<String> getDistinctSetOfTitles(@NotNull final Stream<Task> stream) {
-        // TODO
-        return Collections.emptySet();
+        var nameStream = stream.map(Task::getTitle).distinct();
+        return nameStream.collect(Collectors.toUnmodifiableSet());
     }
-
     /**
      * Returns the first <i>N</i> tasks from the stream.
      *
@@ -64,8 +63,7 @@ public class TaskUtils {
      */
     @NotNull
     public static List<Task> getFirstTasks(@NotNull final Stream<Task> stream, final long count) {
-        // TODO
-        return Collections.emptyList();
+        return stream.limit(count).toList();
     }
 
     /**
@@ -88,8 +86,7 @@ public class TaskUtils {
             @NotNull final Predicate<Task> predicate,
             final long count
     ) {
-        // TODO
-        return Collections.emptyList();
+        return stream.filter(predicate).limit(count).toList();
     }
 
     /**
@@ -103,8 +100,7 @@ public class TaskUtils {
      * @return The number of tasks with an empty description.
      */
     public static long countTasksWithEmptyDesc(@NotNull final Stream<Task> stream) {
-        // TODO
-        return -1;
+        return stream.filter(t -> t.getDescription().equals("")).count();
     }
 
     /**
@@ -127,8 +123,8 @@ public class TaskUtils {
             @NotNull final Task.Type type,
             @NotNull final Instant minTime
     ) {
-        // TODO
-        return false;
+        return stream.filter(t -> t.getType().equals(type))
+                .allMatch(t -> t.getCreatedOn().isAfter(minTime));
     }
 
     /**
@@ -146,9 +142,9 @@ public class TaskUtils {
      * @return First task from the stream with the given tag, or {@code null} if there are no tasks.
      */
     @Nullable
-    public static Task getFirstTaskWithTag(@NotNull final Stream<Task> stream, @NotNull final String tag) {
-        // TODO
-        return null;
+    public static Task getFirstTaskWithTag(@NotNull final Stream<Task> stream,
+                                           @NotNull final String tag) {
+        return stream.filter(t -> t.getTags().contains(tag)).findAny().orElse(null);
     }
 
     /**
@@ -167,8 +163,7 @@ public class TaskUtils {
      */
     @Nullable
     public static Task getOldestTask(@NotNull final Stream<Task> stream) {
-        // TODO
-        return null;
+        return stream.min(Comparator.comparing(Task::getCreatedOn)).orElse(null);
     }
 
     /**
@@ -187,8 +182,7 @@ public class TaskUtils {
      */
     @NotNull
     public static List<Task> sortTasksByDescriptionLengthDesc(@NotNull final Stream<Task> stream) {
-        // TODO
-        return Collections.emptyList();
+        return stream.sorted(Comparator.comparing(Task::getDescription).reversed()).toList();
     }
 
     /**
@@ -209,8 +203,7 @@ public class TaskUtils {
      */
     @NotNull
     public static Map<UUID, Task> associateByUUID(@NotNull final Stream<Task> stream) {
-        // TODO
-        return Collections.emptyMap();
+        return stream.collect(Collectors.toMap(Task::getId,Function.identity()));
     }
 
     /**
@@ -236,7 +229,23 @@ public class TaskUtils {
      */
     @NotNull
     public static Map<String, List<Task>> associateTagsWithTask(@NotNull final Stream<Task> stream) {
-        // TODO
-        return Collections.emptyMap();
+        return stream.map(task -> {
+            Map<String, List<Task>> map = new HashMap<>();
+            task.getTags().forEach(tag -> {
+                var list = new ArrayList<Task>();
+                list.add(task);
+                map.put(tag, list);
+            });
+            return map;
+        }).reduce(new HashMap<String, List<Task>>(), (accMap, kvMap) -> {
+            kvMap.forEach((key, vals) -> {
+                if (accMap.containsKey(key)) {
+                    vals.forEach(val -> accMap.get(key).add(val));
+                } else {
+                    accMap.put(key, vals);
+                }
+            });
+            return accMap;
+        });
     }
 }
